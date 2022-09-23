@@ -13,7 +13,7 @@ In addition, added test cases in class_loader differently from facontidavide/Plu
 - example   
 <img src="https://github.com/holograming/PluginLoader/blob/main/img/enable_test.png" alt="step1" class="center">>
    
-- build complete
+- build complete   
 <img src="https://github.com/holograming/PluginLoader/blob/main/img/build_complete.png" alt="step1" class="center">>
    
 👤 **Hologramer1220**
