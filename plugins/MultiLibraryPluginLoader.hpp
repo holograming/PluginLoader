@@ -32,9 +32,6 @@
 #ifndef PLUGIN_MULTI_LIBRARY_PLUGIN_LOADER_HPP_
 #define PLUGIN_MULTI_LIBRARY_PLUGIN_LOADER_HPP_
 
-#pragma warning(push)
-#pragma warning(disable:4251) // pass for warning C4251 comments
-
 #include <mutex>
 #include <cstddef>
 #include <map>
@@ -361,7 +358,5 @@ private:
 };
 
 } // namespace plugin
-
-#pragma warning(pop)
 
 #endif // PLUGIN_MULTI_LIBRARY_PLUGIN_LOADER_HPP_

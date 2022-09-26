@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 project(PluginLoader CXX)
 
-set(USE_TEST "" CACHE BOOL FALSE)
+set(USE_GOOGLE_TEST "Build with Google test options" CACHE BOOL FALSE)
+set(USE_EXAMPLE "Build with example test options" CACHE BOOL FALSE)
 
 SET(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR})
@@ -33,7 +34,9 @@ set(${PROJECT_NAME}_HEADERS
     plugins/PluginMacro.hpp
 )
 
+#
 add_library(${PROJECT_NAME} SHARED ${${PROJECT_NAME}_SRCS} ${${PROJECT_NAME}_HEADERS})
+
 # Causes the visibility macros to use dllexport rather than dllimport
 # which is appropriate when building the dll but not consuming it.
 target_compile_definitions(${PROJECT_NAME} PRIVATE "PLUGIN_LOADER_BUILDING_DLL")
@@ -57,6 +60,12 @@ install(EXPORT ${PROJECT_NAME}targets         # 6.a
     DESTINATION lib/cmake/                    # 6.c 설치할 곳
     EXPORT_LINK_INTERFACE_LIBRARIES)          # 6.d 동시에 링크해야할 라이브러리를 export 한다
 
-if(USE_TEST)
-    add_subdirectory(test)
+if(USE_GOOGLE_TEST)
+    add_subdirectory(testGoogle)
 endif()
+
+if(USE_EXAMPLE)
+    add_subdirectory(testSimple)
+    add_subdirectory(testMathFunctions)
+endif()
+

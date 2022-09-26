@@ -38,6 +38,8 @@
 #include <plugins/PluginLoader.hpp>
 #include <plugins/MultiLibraryPluginLoader.hpp>
 
+#include <plugins/PluginLoaderCore.hpp>
+
 #include "gtest/gtest.h"
 
 #include "base.hpp"
@@ -48,6 +50,9 @@ const std::string LIBRARY_2 = "PluginLoader_TestPlugins2.dll";  // NOLINT
 TEST(PluginLoaderTest, basicLoad) {
 	try {
 		plugin::PluginLoader loader1(LIBRARY_1, false);
+
+		auto names = loader1.getAvailableClasses<Base>();
+
 		loader1.createInstance<Base>("Cat")->saySomething();  // See if lazy load works
 	}
 	catch (plugin::PluginLoaderException & e) {
@@ -339,9 +344,19 @@ TEST(MultiPluginLoaderTest, noWarningOnLazyLoad) {
 	SUCCEED();
 }
 
+class Caaat : public Base
+{
+public:
+	virtual void saySomething() { std::cout << "Caaat" << std::endl; }
+};
+
 // Run all the tests that were declared with TEST()
 int main(int argc, char ** argv)
 {
+
+
+	plugin::setLogLevel(plugin::CONSOLE_LOG_DEBUG);
+	//plugin::impl::registerPlugin<Caaat, Base>("Caaat", "Base");
 	testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }

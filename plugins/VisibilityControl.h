@@ -30,15 +30,34 @@
 #ifndef VISIBILITY_CONTROL_HPP_
 #define VISIBILITY_CONTROL_HPP_
 
-#define PLUGIN_LOADER_EXPORT __declspec(dllexport)
-#define PLUGIN_LOADER_IMPORT __declspec(dllimport)
 
-#ifdef PLUGIN_LOADER_BUILDING_DLL
-	#define PLUGIN_LOADER_PUBLIC PLUGIN_LOADER_EXPORT
-	#define PLUGIN_LOADER_DIRECTION extern "C"
+#ifdef PLUGIN_LOADER_STATIC_DEFINE
+	#define PLUGIN_LOADER_EXPORT
+	#define PLUGIN_LOADER_IMPORT
+	
+	#ifdef PLUGIN_LOADER_BUILDING_DLL
+		#define PLUGIN_LOADER_PUBLIC PLUGIN_LOADER_EXPORT
+	#else
+		#define PLUGIN_LOADER_PUBLIC PLUGIN_LOADER_IMPORT
+	#endif
 #else
-	#define PLUGIN_LOADER_PUBLIC PLUGIN_LOADER_IMPORT
-	#define PLUGIN_LOADER_DIRECTION
+	#define PLUGIN_LOADER_EXPORT __declspec(dllexport)
+	#define PLUGIN_LOADER_IMPORT __declspec(dllimport)
+
+	#ifdef PLUGIN_LOADER_BUILDING_DLL
+		#define PLUGIN_LOADER_PUBLIC PLUGIN_LOADER_EXPORT
+	#else
+		#define PLUGIN_LOADER_PUBLIC PLUGIN_LOADER_IMPORT
+	#endif
 #endif
 
+
+ // based on wiki.ros.org: http://wiki.ros.org/win_ros/Contributing/Dll%20Exports
+ // Ignore warnings about import/exports when deriving from std classes.
+ // https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-1-c4251
+ // https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-2-c4275
+#ifdef _MSC_VER
+	#pragma warning(disable: 4251)
+	#pragma warning(disable: 4275)
+#endif
 #endif //VISIBILITY_CONTROL_HPP_
